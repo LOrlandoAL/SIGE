@@ -1,0 +1,124 @@
+body {
+    margin: 0; /* Eliminar los márgenes predeterminados del cuerpo */
+    padding: 0; /* Eliminar el relleno predeterminado del cuerpo */
+    overflow-x: hidden; /* Ocultar el desplazamiento horizontal */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+header, footer {
+    width: 100%; /* Asegurar que tanto el encabezado como el footer abarquen todo el ancho */
+}
+
+/* Estilo para el encabezado */
+header {
+    background-color: #3AB71B; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 25px; /* Espaciado interno para separar el contenido del borde */
+}
+
+.logo img {
+    width: 150px; /* Ajusta el ancho de la imagen según tu diseño */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center;
+    height: 80vh; /* Esto asegura que el contenedor ocupe toda la altura de la ventana */
+}
+
+.left-section, .right-section {
+    width: 50%; /* Cada sección ocupa el 50% del ancho */
+    
+}
+
+.left-section {
+    padding: 20px;
+    text-align: center; /* Centra el contenido horizontalmente */
+}
+
+
+.right-section {
+    padding: 50px;
+}
+
+.left-section img {
+    width: 50%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+select {
+    margin-top: 50px; /* Espacio entre la imagen y el select */
+    background-color: green; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 3px; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.right-section button, .left-section2 button {
+    background-color: green; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 10px 5px; /* Ajuste de espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.right-section label, .right-section input, .right-section a, .right-section button {
+    display: table-cell;
+    margin-bottom: 15px;
+}
+
+/*Alumno*/
+.container2 {
+    display: flex;
+}
+
+.left-section2 {
+    flex: none;
+    padding: 30px 170px;
+    margin: 70px;
+    background-color: #fff;
+    display: block; 
+}
+
+.right-section2 {
+    flex: 1;
+    padding: 12px;
+    padding-top: 30%;
+    padding-bottom: 8%;
+    background-image: url('../imgs/Alumnos.JPG'); /* Ruta de tu imagen de fondo */
+    background-size: cover; /* Ajustar la imagen para cubrir todo el fondo */
+    background-position: right top; /* Posicionar la imagen en la esquina superior derecha */
+    background-repeat: no-repeat; /* No repetir la imagen */
+    background-size: auto 130%;
+}
+.right-section3 {
+    flex: 1;
+    padding: 12px;
+    padding-top: 30%;
+    padding-bottom: 8%;
+    background-image: url('../imgs/Profes.JPG'); /* Ruta de tu imagen de fondo */
+    background-size: cover; /* Ajustar la imagen para cubrir todo el fondo */
+    background-position: right top; /* Posicionar la imagen en la esquina superior derecha */
+    background-repeat: no-repeat; /* No repetir la imagen */
+    background-size: auto 130%;
+}
+
+
+
+
+/* Estilo para el footer */
+footer {
+    background-color: #3AB71B; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 8px; /* Espaciado interno para separar el contenido del borde */
+    text-align: center; /* Alinear el texto al centro */
+    position: fixed; /* Fijar el footer en la parte inferior */
+    bottom: 0; /* Posicionar el footer al fondo */
+    left: 0; /* Alinear el footer a la izquierda */
+}
+
+
