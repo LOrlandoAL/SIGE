@@ -25,7 +25,7 @@ if (isset($_SESSION["us"])) {
         // Obtener el tipo de usuario
         $tipoUsuario = $DaoUbicacion->obtenerTipo($usuario);
 
-        if ($tipoUsuario != "Alumno") {
+        if ($tipoUsuario != "0") { // 0 iIndica que somos un alumno siguiedo el modelo de ALUMNOPROFESOR respectivamente 01
             header("Location: CredencialDos.php");
             exit; // Detener la ejecución del script después de redirigir
         } else {

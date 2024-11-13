@@ -26,7 +26,7 @@ class DaoCredencialAl
     {
         try 
         {
-            $sql = "SELECT IdUsuarios, nombre, carrrera_area, semestre FROM Usuarios WHERE IdUsuarios = :id;";
+            $sql = "SELECT usuario, nombre, carrera, semestre FROM Usuarios WHERE usuario = :id;";
                     
             $this->conectar();
             $stmt = $this->ConL->prepare($sql);

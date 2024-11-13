@@ -1,7 +1,8 @@
 <?php
-//importa la clase conexi�n y el modelo para usarlos
+// Importa la clase conexión y el modelo para usarlos
 require_once 'conexion.php'; 
 require_once '../modelos/Alumnos.php'; 
+
 if (session_status() === PHP_SESSION_ACTIVE) {
     // La sesión está activa
     echo "La sesión está activa.";
@@ -9,10 +10,9 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     // La sesión no está activa
     session_start();
 }
+
 class DaoAlumnos
 {
-    
-
     private $ConL;
     
     function conectar()
@@ -20,49 +20,47 @@ class DaoAlumnos
         $Con = new Conexion();
         $this->ConL = $Con::obtenerConexion();
     }
-    public function agregar(Alumnos $obj)
 
-	{
-       
-		try 
-		{
-            $sql = "INSERT INTO usuario
-                (IdUsuarios,
+    public function agregar(Alumnos $obj)
+    {
+        try 
+        {
+            $sql = "INSERT INTO usuarios
+                (usuario,
                 nombre,
-                carrrera_area,
+                carrera,
                 discapacidad,
-                tipo,
-                puesto,
+                veiculo,
+                AluProf,
                 semestre,
                 contrasenia)
                 VALUES
-                (:IdUsuarios,
+                (:usuario,
                 :nombre,
-                :carrera_area,
+                :carrera,
                 :discapacidad,
-                :tipo,
-                :puesto,
+                :veiculo,
+                :AluProf,
                 :semestre,
                 sha2(:contrasenia,224));";
                 
             $this->conectar();
-            $this->ConL->prepare($sql)
-                 ->execute(array(
-                    ':IdUsuarios'=>$obj->IdUsuarios,
-                    ':nombre'=>$obj->nombre,
-                    ':carrera_area'=>$obj->carrrera_area,
-                    ':discapacidad'=>$obj->discapacidad,
-                    ':tipo'=>$obj->tipo,
-                    ':puesto'=>$obj->puesto,
-                    ':semestre'=>$obj->semestre,
-                    ':contrasenia'=>$obj->contrasenia));
-                    return true;
-                 
+            $stmt = $this->ConL->prepare($sql);
+            $stmt->execute(array(
+                ':usuario' => $obj->IdUsuarios,
+                ':nombre' => $obj->nombre,
+                ':carrera' => $obj->carrera,
+                ':discapacidad' => $obj->discapacidad,
+                ':veiculo' => $obj->veiculo,
+                ':AluProf' => $obj->AluProf,
+                ':semestre' => $obj->semestre,
+                ':contrasenia' => $obj->contrasenia
+            ));
+            return true;
          
-		} catch (Exception $e){
-			exit($e->getMessage());
-		}finally{
+        } catch (Exception $e) {
+            exit($e->getMessage());
         }
-	}
-
+    }
 }
+?>

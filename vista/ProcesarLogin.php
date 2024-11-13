@@ -32,12 +32,13 @@ if (isset($_POST["usuario"]) && isset($_POST["contrasenia"])) {
         $_SESSION['us'] = $_POST["usuario"];
             
         $Si=$DaoLogin->Login($_POST["usuario"],$_POST["contrasenia"]);
-         //var_dump($Si);
+
         if($Si)
         {
             header("Location: Ubicacion.php");
         }
         else{
+            var_dump($_POST["usuario"]);
            header("Location: index.php");
         }
     }

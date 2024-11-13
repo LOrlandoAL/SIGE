@@ -11,17 +11,16 @@ if (session_status() === PHP_SESSION_ACTIVE) {
 class DaoUbicacion
 {
     private $ConL;
-    
     function conectar()
     {
         $Con = new Conexion();
         $this->ConL = $Con->obtenerConexion();
     }
-    public function obtenerTipo($id)
-{
+    
+    public function obtenerTipo($id){
     try 
     {
-        $sql = "SELECT tipo FROM Usuarios WHERE IdUsuarios = :id;";
+        $sql = "SELECT AluProf FROM Usuarios WHERE usuario = :id;";
                 
         $this->conectar();
         $stmt = $this->ConL->prepare($sql);
@@ -30,8 +29,7 @@ class DaoUbicacion
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($resultado) {
-            var_dump($resultado);
-            return $resultado['tipo']; // Devuelve el valor del campo 'tipo'
+            return $resultado['AluProf']; // Devuelve el valor del campo 'tipo'
         } else {
             return false; // Si no se encuentra ningún resultado, devuelve false
         }

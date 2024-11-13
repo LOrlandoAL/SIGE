@@ -20,15 +20,27 @@ create table Espacio(
 );
 
 -- true: moto sin discapacidad y alumno
-create table Usuario(
-	id int primary key auto_increment not null,
-    usuario varchar(9) not null,
-    nombre varchar(50) not null,
-    contrasenia varchar(20) not null,
-    veiculo bool default true not null,
-    discapacidad bool default false not null,
-    AluProf bool default true not null
+CREATE TABLE Usuarios (
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    usuario VARCHAR(9) NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    contrasenia CHAR(64) NOT NULL,
+    veiculo BOOL DEFAULT true NOT NULL,
+    discapacidad BOOL DEFAULT false NOT NULL,
+    AluProf BOOL DEFAULT true NOT NULL,
+    carrera ENUM(
+        'Ingenieria en sistemas Computacionales',
+        'Ingenieria en Sistemas Automotrices',
+        'Ingenieria Ambiental',
+        'Gastronomía',
+        'Gestión Empresarial',
+        'Ingenieria en Microcontroladores',
+        'Ingenieria en Electronica',
+        'Ingenieria industrial'
+    ) DEFAULT 'Ingenieria en sistemas Computacionales' NOT NULL,
+    semestre TINYINT NOT NULL CHECK (semestre BETWEEN 1 AND 9)
 );
+
 
 create table Queja(
 	id int primary key auto_increment not null,
@@ -36,7 +48,7 @@ create table Queja(
     estado enum('En espera', 'En revison', 'Solucionado') default 'En espera' not null,
     rutaFoto varchar(50),
     id_Ususario int not null,
-    foreign key (id_Ususario) references Usuario(id)
+    foreign key (id_Ususario) references Usuarios(id)
 );
 
 create table EspUsuario(
@@ -45,22 +57,21 @@ create table EspUsuario(
     Entrada datetime not null,
     Salida datetime not null,
     foreign key (id_Espacio) references Espacio(id),
-    foreign key (id_Usuario) references Usuario(id)
+    foreign key (id_Usuario) references Usuarios(id)
 );
 
 
 -- Incersion de datos:
 -- Agregar registros a la tabla Estacionamiento
 INSERT INTO Estacionamiento (Nombre, AluProf, CarMot) VALUES 
-('Estacionamiento Norte', true, true),
-('Estacionamiento Sur', false, true),
-('Estacionamiento Este', true, false);
+('Estacionamiento N Carro ', false, false);
 
 -- Agregar registros a la tabla Usuario
-INSERT INTO Usuario (usuario, nombre, contrasenia, veiculo, discapacidad, AluProf) VALUES 
-('U12345678', 'Juan Pérez', 'password123', true, false, true),
-('U87654321', 'Ana Gómez', 'pass456', false, true, false),
-('U11223344', 'Carlos Ruiz', 'mysecret', true, false, true);
+INSERT INTO Usuarios (usuario, nombre, contrasenia, veiculo, discapacidad, AluProf, carrera) VALUES 
+('S21120218', 'Luis Orlando', SHA2('OrlandoAL1234', 224), true, false, false, 'Ingenieria en sistemas Computacionales');
+SELECT usuario, contrasenia FROM Usuarios WHERE usuario = 'S21120218' AND contrasenia = SHA2('OrlandoAL1234', 224);
+
+
 
 -- Agregar registros a la tabla Queja
 INSERT INTO Queja (descripcion, estado, rutaFoto, id_Ususario) VALUES 
@@ -72,14 +83,10 @@ INSERT INTO Queja (descripcion, estado, rutaFoto, id_Ususario) VALUES
 -- Reibe el num de espacio, el id de usuario, la fecha de entrada y la fecha de salida.
 -- Revisar el update de la salida ya que no entra y sale a la misma hora, crear un UPDATE del mismo para llevar el control.
 INSERT INTO EspUsuario (id_Espacio, id_Usuario, Entrada, Salida) VALUES 
-(1, 1, '2024-11-06 08:30:00', '2024-11-06 12:00:00'),
-(2, 2, '2024-11-06 09:00:00', '2024-11-06 11:30:00'),
-(3, 3, '2024-11-06 10:00:00', '2024-11-06 14:00:00');
+(1, 1, '2024-11-06 08:30:00', '2024-01-01 00:00:00');
 
 INSERT INTO Espacio (tipo, estado, id_Estacionamiento) VALUES 
-(false, true, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),(false, false, 1),
-(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),(false, false, 2),
-(true, true, 3),(true, false, 3),(false, true, 3),(false, false, 3),(true, true, 3),(true, false, 3),(false, true, 3),(false, false, 3),(true, true, 3),(true, false, 3),(false, true, 3),(false, false, 3);
+(false, false, 1);
 
 -- ############ SCRIPT SPRINT ORLANDO ############ --
 
@@ -98,7 +105,17 @@ FROM Espacio
 WHERE estado = false and tipo = true
 LIMIT 10; -- Devolver los n lugares que esten libres.
 
+SELECT * FROM usuarios;
 SELECT * FROM Espacio;
+SELECT * FROM estacionamiento;
+SELECT * FROM EspUsuario;
+
+SELECT AluProf FROM Usuarios WHERE usuario = 'S21120218';
+SELECT id_Usuario FROM EspUsuario WHERE id_Usuario = 'S21120218' AND Salida = '2024-01-01 00:00:00';
+SELECT id_Usuario FROM EspUsuario WHERE id_Usuario = '1' AND Salida = '2024-01-01 00:00:00';
+ALTER TABLE EspUsuario MODIFY COLUMN Salida DATETIME DEFAULT '2024-01-01 00:00:00';
+
+
 
 SELECT id_Espacio, id_Usuario, Entrada, Salida from EspUsuario where id_espacio=1 and id_usuario=1;
 UPDATE EspUsuario SET Salida = now() where id_espacio=1 and id_usuario=1; -- revisar la posibilidad de exportar los datos al finalizar el dia y borrar todo aque lugar que tenga una salida diferente a la predenterminada.

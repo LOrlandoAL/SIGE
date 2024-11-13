@@ -26,20 +26,18 @@ class DAOLogin
     {
         try 
         {
-            $sql = "SELECT IdUsuarios, contrasenia FROM Usuarios 
-                    WHERE IdUsuarios = :id AND contrasenia = SHA2(:contra, 224);";
+            $sql = "SELECT usuario, contrasenia FROM Usuarios 
+                    WHERE usuario = :id AND contrasenia = SHA2(:contrasenia, 224);";
                     
             $this->conectar();
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute(array(':id' => $id, ':contra' => $contrasenia));
+            $stmt->execute(array(':id' => $id, ':contrasenia' => $contrasenia));
                        
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
     
             if ($resultado) {
-               
                 return true; // Si se encuentra un resultado, devuelve true
             } else {
-                //echo($resultado);
                 return false; // Si no se encuentra ningún resultado, devuelve false
             }
         } catch (Exception $e){

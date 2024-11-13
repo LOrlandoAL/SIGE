@@ -1,56 +1,52 @@
 <?php
 require_once("../datos/conexion.php");
 require_once("../datos/DaoCarros.php");
+
 if (session_status() === PHP_SESSION_ACTIVE) {
    session_destroy();
-   //var_dump("SE CERRO LA SESSION");
 } else {
     session_start();
-    
-   // echo "La sesión no está activa.";
 }
 
-// Revisar que lleguen los datos
- //isset($_POST["server"]) && isset($_POST["puerto"]) && 
 if (isset($_POST["usuario"])) {
-    // Revisar en BD que esten correctas
-  
+    // Revisar en BD que estén correctos
     $Hayconexion = new Conexion();
     $con= $Hayconexion::obtenerConexion();
-    
 
-    if ($con!=null) {
+    if ($con != null) {
         $DaoCarros = new DAOCarros();
         
-        if (session_status() === PHP_SESSION_ACTIVE) {
-     
-        }  else {
-            // La sesión no está activa
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
+        }
 
-        }
-        $Si=$DaoCarros->Existe($_POST["usuario"]);
-        if($Si)
-        {
-            $es=$DaoCarros->ObtenerIdEs($_POST["usuario"]);
-            $idEspacio = $es["idEspacio"];
-            $DaoCarros->salida($_POST["usuario"], $idEspacio);
-            header("Location: EntradaCarros.php");
-        }
-        else{
+        $Si = $DaoCarros->Existe($_POST["usuario"]);
+        
+        if ($Si) {
+            $es = $DaoCarros->ObtenerIdEs($_POST["usuario"]);
+            
+            if ($es !== null && isset($es["id_Espacio"])) {
+                $idEspacio = $es["id_Espacio"];
+                $DaoCarros->Salida($_POST["usuario"]);
+                header("Location: EntradaCarros.php");
+            } else {
+                echo "No se encontró un espacio asignado para el usuario.";
+            }
+        } else {
             $DaoCarros->Entrada($_POST["usuario"]);
-            $es=$DaoCarros->ObtenerIdEs($_POST["usuario"]); 
-            $idEspacio = $es["idEspacio"];
-            $mensaje = "te toco el lugar".$idEspacio;
-            $mensaje_codificado = urlencode($mensaje);   
-            header("Location: EntradaCarros.php?mensaje=$mensaje_codificado");
-            exit();
+            $es = $DaoCarros->ObtenerIdEs($_POST["usuario"]);
+            
+            if ($es !== null && isset($es["id_Espacio"])) {
+                $idEspacio = $es["id_Espacio"];
+                $mensaje = "Te tocó el lugar " . $idEspacio;
+                $mensaje_codificado = urlencode($mensaje);   
+                header("Location: EntradaCarros.php?mensaje=$mensaje_codificado");
+                exit();
+            } else {
+                echo "No se encontró un espacio asignado para el usuario después de la entrada.";
+            }
         }
     }
-    //header("Location: index.php");
-}else{
+} else {
     echo("NO HAY VALORES");
 }
-
-//header("Location: index.php");
-?>
