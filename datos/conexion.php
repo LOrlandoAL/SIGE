@@ -6,31 +6,15 @@ class Conexion
 {
     private static $conexion = null;
 
-    public function __construct()
-    {
+    private static function conectar() {
         try {
-            if (session_status() === PHP_SESSION_ACTIVE) {
-                // La sesión ya está activa
-            } else {
-                session_start();
+            if (self::$conexion === null) {
+                self::$conexion = new PDO("mysql:host=localhost;port=3306;dbname=sige", "root", "root");
+                self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             }
-            self::$conexion = new PDO("mysql:host=localhost;port=3306;dbname=sige", "root", "root");
-            self::$conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            // echo "Conexion exitosa!";
         } catch (PDOException $e) {
-            exit($e->getMessage());
-            return false;
+            exit("Error en la conexión: " . $e->getMessage());
         }
-        return self::$conexion;
-    }
-
-    /**
-     * Método que permite cerrar la conexión a la base de datos
-     */
-    public function desconectar()
-    {
-        self::$conexion = null;
-        session_destroy();
     }
 
     /**
@@ -38,7 +22,21 @@ class Conexion
      */
     public static function obtenerConexion()
     {
+        if (self::$conexion === null) {
+            self::conectar();
+        }
         return self::$conexion;
+    }
+
+    /**
+     * Método que permite cerrar la conexión a la base de datos
+     */
+    public static function desconectar()
+    {
+        self::$conexion = null;
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_destroy();
+        }
     }
 }
 ?>
