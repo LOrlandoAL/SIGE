@@ -1,3 +1,4 @@
+drop database sige;
 create database sige;
 use sige;
 
@@ -38,14 +39,17 @@ CREATE TABLE Usuarios (
         'Ingenieria en Electronica',
         'Ingenieria industrial'
     ) DEFAULT 'Ingenieria en sistemas Computacionales' NOT NULL,
-    semestre TINYINT NOT NULL CHECK (semestre BETWEEN 1 AND 9)
+    semestre TINYINT NOT NULL CHECK (semestre BETWEEN 1 AND 9),
+    Administrador bool not null default false
 );
+
+
 
 
 create table Queja(
 	id int primary key auto_increment not null,
     descripcion Text not null,
-    estado enum('En espera', 'En revison', 'Solucionado') default 'En espera' not null,
+    estado enum('En espera', 'En revision', 'Solucionado') default 'En espera' not null,
     rutaFoto varchar(50),
     id_Ususario int not null,
     foreign key (id_Ususario) references Usuarios(id)
@@ -67,10 +71,12 @@ INSERT INTO Estacionamiento (Nombre, AluProf, CarMot) VALUES
 ('Estacionamiento N Carro ', false, false);
 
 -- Agregar registros a la tabla Usuario
-INSERT INTO Usuarios (usuario, nombre, contrasenia, veiculo, discapacidad, AluProf, carrera) VALUES 
-('S21120218', 'Luis Orlando', SHA2('OrlandoAL1234', 224), true, false, false, 'Ingenieria en sistemas Computacionales');
+INSERT INTO Usuarios (usuario, nombre, contrasenia, veiculo, discapacidad, AluProf, carrera, semestre, Administrador) VALUES 
+('S21120218', 'Luis Orlando', SHA2('OrlandoAL1234', 224), true, false, false, 'Ingenieria en sistemas Computacionales', 7, true);
 SELECT usuario, contrasenia FROM Usuarios WHERE usuario = 'S21120218' AND contrasenia = SHA2('OrlandoAL1234', 224);
 
+INSERT INTO Usuarios (usuario, nombre, contrasenia, veiculo, discapacidad, AluProf, carrera, semestre, Administrador) VALUES 
+('S21120181', 'Ian Rodolfo', SHA2('1223334444', 224), true, false, false, 'Ingenieria en sistemas Computacionales', 7, false);
 
 
 -- Agregar registros a la tabla Queja

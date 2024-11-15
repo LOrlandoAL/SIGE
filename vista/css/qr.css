@@ -1,0 +1,27 @@
+/*Alumno*/
+.qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8pc;
+}
+
+/* Contenedor del mensaje de quejas */
+.contenedor_Mensaje {
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor_Mensaje p {
+    font-size: 1.2em;
+}
+
+.contenedor_Mensaje a {
+    color: #3AB71B;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contenedor_Mensaje a:hover {
+    text-decoration: underline;
+}

@@ -6,7 +6,6 @@ session_start(); // Debes iniciar la sesión al principio del archivo si vas a v
 
 if (session_status() === PHP_SESSION_ACTIVE) {
     // La sesión está activa
-    echo "La sesión está activa.";
 } else {
     // La sesión no está activa
     echo "La sesión no está activa.";

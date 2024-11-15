@@ -21,6 +21,10 @@ header {
     height: auto; /* Mantiene la proporción de la imagen */
 }
 
+.qrqueja {
+    display: flex;
+}
+
 .container {
     display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
@@ -107,9 +111,6 @@ select {
     background-size: auto 130%;
 }
 
-
-
-
 /* Estilo para el footer */
 footer {
     background-color: #3AB71B; /* Color de fondo verde */
@@ -120,5 +121,3 @@ footer {
     bottom: 0; /* Posicionar el footer al fondo */
     left: 0; /* Alinear el footer a la izquierda */
 }
-
-

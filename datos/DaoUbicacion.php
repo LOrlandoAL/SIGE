@@ -3,7 +3,6 @@
 require_once 'conexion.php'; 
 if (session_status() === PHP_SESSION_ACTIVE) {
     // La sesión está activa
-    echo "La sesión está activa.";
 } else {
     // La sesión no está activa
     session_start();
