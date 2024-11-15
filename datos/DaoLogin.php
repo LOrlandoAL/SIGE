@@ -26,12 +26,12 @@ class DAOLogin
     {
         try 
         {
-            $sql = "SELECT usuario, contrasenia FROM Usuarios 
-                    WHERE usuario = :id AND contrasenia = SHA2(:contrasenia, 224);";
+            $sql = "SELECT id, usuario, contrasenia FROM Usuarios
+                    WHERE usuario = :usuario AND contrasenia = SHA2(:contrasenia, 224);";
                     
             $this->conectar();
             $stmt = $this->conexion->prepare($sql);
-            $stmt->execute(array(':id' => $id, ':contrasenia' => $contrasenia));
+            $stmt->execute(array(':usuario' => $id, ':contrasenia' => $contrasenia));
                        
             $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
     

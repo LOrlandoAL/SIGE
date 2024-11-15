@@ -14,7 +14,7 @@ class DaoQueja {
         if ($this->conn === null) {
             die("Error: No se pudo establecer la conexión a la base de datos.");
         }
-    }
+    }   
     
 
     // Función para crear una nueva queja
@@ -43,17 +43,26 @@ class DaoQueja {
     
 
     // Función para obtener todas las quejas o una queja específica por ID
-    public function getQuejas($id = null) {
+    public function getQuejas($id = null, $id_Usuario = null) {
         if ($id) {
-            $stmt = $this->conn->prepare("SELECT * FROM Queja WHERE id = ?");
-            $stmt->bindParam(1, $id, PDO::PARAM_INT);
+            // Obtener una queja específica por su ID
+            $stmt = $this->conn->prepare("SELECT * FROM Queja WHERE id = :id");
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
+        } elseif ($id_Usuario) {
+            // Obtener todas las quejas de un usuario específico
+            $stmt = $this->conn->prepare("SELECT * FROM Queja WHERE id_Ususario = :id_Usuario");
+            $stmt->bindParam(':id_Usuario', $id_Usuario, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
+            // Obtener todas las quejas (para casos administrativos)
             $stmt = $this->conn->query("SELECT * FROM Queja");
-            return $stmt->fetchAll(PDO::FETCH_ASSOC); // Utilizamos fetchAll con PDO
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+    
     
 
     // Función para eliminar una queja
@@ -72,9 +81,11 @@ $daoQueja = new DaoQueja();
 switch ($action) {
     case 'get':
         $id = $_GET['id'] ?? null;
-        $result = $daoQueja->getQuejas($id);
+        $id_Usuario = $_GET['id_Usuario'] ?? null;
+        $result = $daoQueja->getQuejas($id, $id_Usuario);
         echo json_encode($result);
-        break;
+        exit;    
+    
 
     case 'create':
         $descripcion = $_POST['descripcion'] ?? '';

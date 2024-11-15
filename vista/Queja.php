@@ -1,3 +1,15 @@
+<?php
+// Iniciar sesión si no está activa
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if (!isset($_SESSION["us"])) {
+    header("Location: index.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -41,27 +53,26 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                <form id="quejaForm" enctype="multipart/form-data">
-    <input type="hidden" id="quejaId">
-    <div class="form-group">
-        <label for="descripcion">Descripción</label>
-        <textarea class="form-control" id="descripcion" rows="3" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="estado">Estado</label>
-        <select class="form-control" id="estado" required>
-            <option value="En espera">En espera</option>
-            <option value="En revision">En revisión</option>
-            <option value="Solucionado">Solucionado</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="rutaFoto">Subir Foto</label>
-        <input type="file" class="form-control" id="rutaFoto" name="rutaFoto" accept="image/*">
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar</button>
-</form>
-
+                    <form id="quejaForm" enctype="multipart/form-data">
+                        <input type="hidden" id="quejaId">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control" id="descripcion" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group" id="estadoGroup">
+                            <label for="estado">Estado</label>
+                            <select class="form-control" id="estado" required>
+                                <option value="En espera">En espera</option>
+                                <option value="En revision">En revisión</option>
+                                <option value="Solucionado">Solucionado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rutaFoto">Subir Foto</label>
+                            <input type="file" class="form-control" id="rutaFoto" name="rutaFoto" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -72,6 +83,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/queja.js"></script>
 
+    <script>
+        let isAdmin = false;
 
+        // Obtener la información del usuario y determinar si es administrador
+        fetch('/SIGE/vista/getUserInfo.php')
+            .then(response => response.json())
+            .then(data => {
+                isAdmin = data.Administrador === 1; // Asigna isAdmin según el valor devuelto
+                configureForm();
+            })
+            .catch(error => console.error('Error al obtener la información del usuario:', error));
+
+        // Configura el formulario según el rol del usuario
+        function configureForm() {
+            if (!isAdmin) {
+                // Oculta el campo de estado y establece el valor predeterminado en "En espera"
+                document.getElementById("estadoGroup").style.display = "none";
+                document.getElementById("estado").value = "En espera";
+            }
+        }
+
+        // Configura el formulario para que, si no es administrador, siempre envíe "En espera" como estado
+        document.getElementById("quejaForm").addEventListener("submit", function(event) {
+            if (!isAdmin) {
+                document.getElementById("estado").value = "En espera";
+            }
+        });
+    </script>
 </body>
 </html>

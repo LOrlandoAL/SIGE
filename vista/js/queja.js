@@ -1,35 +1,72 @@
 document.addEventListener("DOMContentLoaded", function() {
-    loadQuejas();
+    
+    let id_Usuario;
+let esAdministrador = false;
 
-    // Cargar quejas al cargar la página
-    function loadQuejas() {
-        fetch('/SIGE/vista/DaoQueja.php?action=get')
+// Obtener la información del usuario mediante una solicitud AJAX
+fetch('/SIGE/vista/getUserInfo.php')
+    .then(response => response.json())
+    .then(data => {
+        if (data.id) {
+            id_Usuario = data.id;
+            esAdministrador = data.Administrador;
+            loadQuejas(); // Cargar las quejas después de obtener la información del usuario
+        } else {
+            console.error('Error: No se pudo obtener la información del usuario:', data.error);
+        }
+    })
+    .catch(error => console.error('Error al obtener la información del usuario:', error));
+
+// Modificar la función loadQuejas para cargar las quejas de acuerdo al rol
+function loadQuejas() {
+    if (esAdministrador) {
+        // Si el usuario es administrador, carga todas las quejas sin filtrar por usuario
+        fetch(`/SIGE/vista/DaoQueja.php?action=get`)
             .then(response => {
                 if (!response.ok) throw new Error('Error al cargar las quejas');
                 return response.json();
             })
             .then(data => {
-                const quejasTable = document.getElementById('quejasTable');
-                quejasTable.innerHTML = '';
-                data.forEach(queja => {
-                    quejasTable.innerHTML += `
-                        <tr>
-                            <td>${queja.id}</td>
-                            <td>${queja.descripcion}</td>
-                            <td>${queja.estado}</td>
-                            <td>
-                                ${queja.rutaFoto ? `<img src="${queja.rutaFoto}" alt="Foto" width="100">` : 'N/A'}
-                            </td>
-                            <td>
-                                <button class="btn btn-warning btn-sm" onclick="editQueja(${queja.id})">Editar</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteQueja(${queja.id})">Eliminar</button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                mostrarQuejas(data);
+            })
+            .catch(error => console.error('Error al cargar quejas:', error));
+    } else {
+        // Si el usuario no es administrador, carga solo las quejas del usuario
+        fetch(`/SIGE/vista/DaoQueja.php?action=get&id_Usuario=${id_Usuario}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Error al cargar las quejas');
+                return response.json();
+            })
+            .then(data => {
+                mostrarQuejas(data);
             })
             .catch(error => console.error('Error al cargar quejas:', error));
     }
+}
+
+// Función para mostrar las quejas en la tabla
+function mostrarQuejas(data) {
+    const quejasTable = document.getElementById('quejasTable');
+    quejasTable.innerHTML = '';
+    data.forEach(queja => {
+        quejasTable.innerHTML += `
+            <tr>
+                <td>${queja.id}</td>
+                <td>${queja.descripcion}</td>
+                <td>${queja.estado}</td>
+                <td>
+                    ${queja.rutaFoto ? `<img src="${queja.rutaFoto}" alt="Foto" width="100">` : 'N/A'}
+                </td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="editQueja(${queja.id})">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteQueja(${queja.id})">Eliminar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+
 
     // Agregar o editar queja
     document.getElementById('quejaForm').addEventListener('submit', function(event) {
@@ -54,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     
         // Define un valor temporal para id_Usuario (ajusta según tu lógica de aplicación)
-        const id_Usuario = 1; // Cambia a un valor dinámico si es necesario
+         // Cambia a un valor dinámico si es necesario
         formData.append('id_Usuario', id_Usuario);
     
         fetch(url, {
