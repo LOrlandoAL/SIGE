@@ -29,7 +29,7 @@
                         <input type="text" id="usuario" name="usuario" required>
                         <label for="contrasena">Contraseña</label>
                         <input  required type="password" id="contrasena" name="contrasenia">
-                        <a href="recuperar.php">¿Olvidaste tu contraseña?</a>
+                        <a href="recuperarcontrasena.php">¿Olvidaste tu contraseña?</a>
                         <br>
                         <label for="Registro">¿No tienes una cuenta?</label><a href="" id="Registro"> Registrate</a>
                         <br>

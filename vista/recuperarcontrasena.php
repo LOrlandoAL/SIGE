@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperación de Contraseña</title>
     <style>
-        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
@@ -86,12 +85,11 @@
 <body>
     <div class="container">
         <h2>Recuperación de Contraseña</h2>
-        <p>En el siguiente boton esta la direccion a la cual de vez de mandar el correo .</p>
-        <form action="send_email.php" method="post">
-            
-            <button type="submit" class="btn">Enviar correo a fundijon@gmail.com</button>
+        <p>Manda un correo ala siguiente direccion para recuperar tu contraseña, indicando tu usuario, nos contactaremos contigo pronto.</p>
+        <form method="post">
+            <button type="button" class="btn">LockPicking@SIGE.support.co</button>
         </form>
-        <a href="#" class="back-link">Volver al inicio de sesión</a>
+        <a href="index.php" class="back-link">Volver al inicio de sesión</a>
     </div>
 </body>
 </html>
