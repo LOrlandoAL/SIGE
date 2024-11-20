@@ -19,10 +19,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($con != null) {
     if (session_status() === PHP_SESSION_ACTIVE) {
-        $dao = new DaoDocentes();
+        
     } else {
         session_start();
     }
+
+    $dao = new DaoDocentes();
     
     // Validar los campos esenciales
     if (isset($_POST["Nombre"]) && isset($_POST["Matricula"]) && isset($_POST["Carrera"]) && isset($_POST["discapacidad"]) && isset($_POST["contrasenia"]) && isset($_POST["veiculo"])) {
