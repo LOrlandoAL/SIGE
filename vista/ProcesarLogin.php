@@ -35,7 +35,13 @@ if (isset($_POST["usuario"]) && isset($_POST["contrasenia"])) {
 
         if($Si)
         {
-            header("Location: Ubicacion.php");
+
+            if($DaoLogin->esAdmin($_POST["usuario"])){
+                header("Location: Queja.php");
+            }else{
+                header("Location: Ubicacion.php");
+            }
+            
         }
         else{
             var_dump($_POST["usuario"]);

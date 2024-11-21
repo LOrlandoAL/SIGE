@@ -17,16 +17,22 @@ if (!isset($_SESSION["us"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Quejas - SIGE</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/EstiloQueja.css">
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <img src="imgs/SIGE.JPG" alt="Logo SIGE">
+        </div>
+    </header>
     <div class="container mt-5">
         <h2 class="text-center">Gestión de Quejas</h2>
         
         <!-- Botón para agregar nueva queja -->
-        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addQuejaModal">Agregar Queja</button>
+        <button class="btn btn-success mb-3" data-toggle="modal" data-target="#addQuejaModal" id="Agregar">Agregar Queja</button>
         
         <!-- Tabla para mostrar quejas -->
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="quejas">
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
@@ -77,6 +83,11 @@ if (!isset($_SESSION["us"])) {
             </div>
         </div>
     </div>
+
+    <footer>
+        <p>Instituto Tecnológico Superior del Sur de Guanajuato</p>
+        <p>Todos los derechos reservados. 2024</p>
+    </footer>
 
     <!-- Scripts de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

@@ -47,6 +47,30 @@ class DAOLogin
         }
     }
 
+    public function esAdmin($usuario)
+{
+    try 
+    {
+        $sql = "SELECT Administrador FROM Usuarios
+                WHERE usuario = :usuario;";
+        
+        $this->conectar();
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute(array(':usuario' => $usuario));
+        
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($resultado) {
+            return (bool)$resultado['Administrador']; // Devuelve true si es administrador, false si no
+        } else {
+            return false; // Usuario no encontrado
+        }
+    } catch (Exception $e) {
+        exit($e->getMessage());
+    } finally {
+        // Cerrar conexión o realizar otras tareas de limpieza si es necesario
+    }
+}
 
 	
 }

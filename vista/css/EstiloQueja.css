@@ -1,0 +1,25 @@
+header, footer {
+    width: 100%; /* Asegurar que tanto el encabezado como el footer abarquen todo el ancho */
+}
+
+/* Estilo para el encabezado */
+header {
+    background-color: #3AB71B; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 25px; /* Espaciado interno para separar el contenido del borde */
+}
+
+.logo img {
+    width: 150px; /* Ajusta el ancho de la imagen según tu diseño */
+    height: auto; /* Mantiene la proporción de la imagen */
+}
+
+footer {
+    background-color: #3AB71B; /* Color de fondo verde */
+    color: white; /* Color del texto blanco */
+    padding: 8px; /* Espaciado interno para separar el contenido del borde */
+    text-align: center; /* Alinear el texto al centro */
+    position: fixed; /* Fijar el footer en la parte inferior */
+    bottom: 0; /* Posicionar el footer al fondo */
+    left: 0; /* Alinear el footer a la izquierda */
+}
