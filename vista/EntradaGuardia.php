@@ -5,24 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Estacionamiento</title>
     <link rel="stylesheet" href="css/Estilos.css">
-    <!-- Enlace a Bootstrap para estilos y funcionalidad del modal -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
 </head>
 <header>
-    <div class="logo">
-        <img src="imgs/SIGE.JPG" alt="Logo SIGE">
+    <div class="logo text-center p-3">
+        <img src="imgs/SIGE.JPG" alt="Logo SIGE" class="img-fluid">
     </div>
 </header>
 
 <body>
     <!-- Modal -->
     <div class="modal fade" id="mensajeModal" tabindex="-1" aria-labelledby="mensajeModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="mensajeModalLabel">
                         <?php
-                        // Extraer título del mensaje si está presente
                         if (isset($_GET['mensaje'])) {
                             $mensaje = urldecode($_GET['mensaje']);
                             if (strpos($mensaje, "registrada exitosamente") !== false) {
@@ -39,19 +38,16 @@
                 </div>
                 <div class="modal-body">
                     <?php
-                    // Extraer el nombre del estacionamiento y el ID del espacio
                     if (isset($_GET['mensaje'])) {
                         $mensaje = urldecode($_GET['mensaje']);
 
-                        // Extraer ID del espacio
                         preg_match("/Espacio ID (\d+)/", $mensaje, $matchEspacio);
                         $idEspacio = $matchEspacio[1] ?? "No especificado";
 
-                        // Extraer nombre del estacionamiento
                         preg_match("/estacionamiento '([^']+)'/", $mensaje, $matchEstacionamiento);
                         $nombreEstacionamiento = $matchEstacionamiento[1] ?? "Desconocido";
 
-                        echo "Numero de Espacio: " . htmlspecialchars($idEspacio) . "<br>";
+                        echo "Número de Espacio: " . htmlspecialchars($idEspacio) . "<br>";
                         echo "Nombre del Estacionamiento: " . htmlspecialchars($nombreEstacionamiento);
                     } else {
                         echo "No hay información adicional disponible.";
@@ -65,27 +61,39 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="left-section">
-            <img src="imgs/User.JPG" alt="Imagen izquierda">
-            <form action="procesarAsignacion.php" method="POST">
-                <div class="right-section">
-                    <label for="usuario">Usuario</label>
-                    <input type="text" id="usuario" name="usuario" required>
-                    <button type="submit" class="btn btn-success">Asignar Espacio</button>
+    <!-- Contenedor principal -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <!-- Imagen en la parte superior -->
+            <div class="col-12 text-center mb-4">
+                <img src="imgs/User.JPG" alt="Imagen usuario" class="img-fluid rounded" style="max-width: 200px;">
+            </div>
+
+            <!-- Formulario debajo de la imagen -->
+            <div class="col-md-6">
+                <div class="card p-4 shadow">
+                    <h5 class="card-title text-center mb-4" style="color: green;">Control de Entrada</h5>
+                    <form action="procesarAsignacion.php" method="POST">
+                        <div class="mb-3">
+                            <label for="usuario" class="form-label">Usuario</label>
+                            <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Ingrese el usuario" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Asignar Espacio</button>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-    
-    <footer>
+
+    <footer class="text-center mt-5">
         <p>Instituto Tecnológico Superior del Sur de Guanajuato</p>
         <p>Todos los derechos reservados. 2024</p>
     </footer>
     
-    <!-- Enlace a Bootstrap JS para funcionalidad del modal -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
     <script>
         // Mostrar el modal automáticamente si hay un mensaje
         <?php if (isset($_GET['mensaje'])): ?>
@@ -95,8 +103,6 @@
 
         // Recargar la página al dar clic en "Aceptar" y cerrar el modal
         document.getElementById('aceptarModalButton').addEventListener('click', function () {
-            modal.hide(); // Ocultar el modal
-            // Recargar la página sin parámetros de URL
             window.location.href = window.location.pathname;
         });
     </script>

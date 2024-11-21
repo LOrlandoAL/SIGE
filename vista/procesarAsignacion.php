@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mensaje = $dao->asignarOActualizarEspacio($usuario);
 
     // Redirigir de vuelta a la página con el mensaje
-    header("Location: EntradaCarros.php?mensaje=" . urlencode($mensaje));
+    header("Location: EntradaGuardia.php?mensaje=" . urlencode($mensaje));
     exit;
 }
 ?>

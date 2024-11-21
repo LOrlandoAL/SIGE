@@ -21,25 +21,42 @@
         <!-- Contenedor del código QR -->
         <div class="contenedor_QR">
             <?php
-            // Código PHP que genera el código QR
+            // Incluir la librería QR Code y el DAO
             require "../phpqrcode/qrlib.php";
-            require "../datos/DaoCredencialAL.php";
+            require "../datos/DaoCredencialDos.php";
 
+            // Iniciar sesión si no está activa
             if (!isset($_SESSION)) {
                 session_start();
             }
 
             if (isset($_SESSION["us"])) {
+                // La sesión está activa
                 $Datos = new DaoCredencialAL;
+
+                // Obtener los datos del usuario
                 $jsonData = $Datos->obtenerDatos($_SESSION["us"]);
+
+                // Directorio donde se almacenará el código QR generado
                 $dir = 'qr_codes/';
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true); // Crear el directorio si no existe
+                }
+
+                // Nombre del archivo QR
                 $filename = $dir . 'codigo_qr.png';
-                $tamaño = 10;
+
+                // Tamaño y margen del código QR
+                $tamaño = 10; // Ajustado para un tamaño visual adecuado
                 $margen = 4;
+
+                // Generar el código QR
                 QRcode::png($jsonData, $filename, 'L', $tamaño, $margen);
-                echo '<img src="' . $filename . '" alt="Código QR">';
+
+                // Mostrar la imagen del código QR en el diseño
+                echo '<img src="' . $filename . '" alt="Código QR" class="qr-image">';
             } else {
-                echo "La sesión no está activa.";
+                echo '<p class="text-danger">La sesión no está activa.</p>';
             }
             ?>
         </div>
